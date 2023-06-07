@@ -8,10 +8,13 @@ import SignUp from './Components/Login/SignUp';
 import{Routes,Route} from "react-router-dom"
 import ProtectedRoute from './Routes/ProtectedRoute';
 import ContactManager from './Components/ContactManager/ContactManager';
+import ContactsStore from "./Redux/ContactsRedux/ContactsStore";
+import { Provider } from 'react-redux';
 
 function App() {
   return (
     <div className="ui container">
+      <Provider store = {ContactsStore}>
       <UserContextProvider>
       <Header />
       <Routes>
@@ -20,7 +23,7 @@ function App() {
         <Route path="/signup" element = {<SignUp/>}></Route>
       </Routes>
       </UserContextProvider>
-     
+      </Provider>
     </div>
   );
 }

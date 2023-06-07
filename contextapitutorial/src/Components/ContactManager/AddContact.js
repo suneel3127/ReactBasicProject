@@ -1,14 +1,11 @@
 import { useForm } from "react-hook-form";
-import { useContactContext } from "../../Context/contactContext";
 import { useNavigate ,useLocation} from "react-router-dom";
 import { useState } from "react";
 import api from "../../API/axios";
 
 function AddContact(){
     const { register,formState: { errors }, handleSubmit } = useForm();
-    const {contacts,addContacts} = useContactContext();
     const navigate = useNavigate();
-   
     const onSubmit = async (data) =>{
 
         const request={
@@ -16,8 +13,6 @@ function AddContact(){
           ...data
         }
         const response = await api.post("/contacts",request);
-          console.log(response.data)
-         addContacts(response.data)
          navigate("/home/contactlist")
     }
 

@@ -1,28 +1,44 @@
 import { useForm } from "react-hook-form";
-import { useContactContext } from "../../Context/contactContext";
-import { useNavigate ,useLocation} from "react-router-dom";
+import { useNavigate ,useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "../../API/axios";
+import {useSelector , useDispatch} from 'react-redux';
+import {setSelectedContacts,getSelectedContact} from  "../../Redux/ContactsRedux/ContactsSlice"
 
 function EditContact(){
-    const { register,formState: { errors }, handleSubmit } = useForm();
-    const {contacts,editContacts} = useContactContext();
-    const [editableContact,setEditableContact] = useState([{name:"",email:""}]);
-    const [renderemail,setRenderEmail] = useState();
+    const { register,formState: { errors }, handleSubmit,setValue } = useForm();
+    //const [editableContact,setEditableContact] = useState([{id:"",name:"",email:""}]);
+    
+
+    const selectedContact = useSelector(getSelectedContact)
+    const dispatch = useDispatch()
+
     const navigate = useNavigate();
-    const location = useLocation();
-    console.log(location);
-   
+    const {id} = useParams()
+  
+    const getContactsApi = async () =>{
+      const response = await axios.get(`/Contacts/${id}`);
+      dispatch(setSelectedContacts(response.data))
+      //setEditableContact(response.data);
+    }
+     
+
     useEffect(()=>{
-      
-      const id = location.state.id
-       setEditableContact(contacts.filter((contact)=>contact.id==id)[0])
+      getContactsApi()
     },[])
+
+    useEffect(()=>{
+      if (selectedContact) {
+        setValue( "name", selectedContact.name )
+        setValue( "email", selectedContact.email )
+        
+      }
+    },[selectedContact])
     
    
-    const onSubmit =  (data) =>{
-      console.log(editableContact)
-      //editContacts(editableContact)
-        navigate("/home/contactlist")
+    const onSubmit =  async (data) =>{
+      const response = await axios.put(`/Contacts/${id}`,{"id":id,...data});
+      navigate("/home/contactlist")
     }
 
     return(
@@ -37,12 +53,6 @@ function EditContact(){
               type="text"
               name="name"
               placeholder="Name"
-              value={editableContact.name}
-              onchange = {(e)=>{
-                e.preventDefault();
-                setEditableContact({name:e.target.value,email:editableContact.email})
-                }
-              }
               {...register('name', { required: true })}
             />
             {errors.name && errors.name.type === "required" && (
@@ -54,12 +64,6 @@ function EditContact(){
               type="email"
               name="email"
               placeholder="Email"
-              value={editableContact.email}
-              onchange = {(e)=>{
-                e.preventDefault();
-                setEditableContact({name:editableContact.name,email:e.target.value})
-                }
-              }
               {...register('email', { required: true })}
             />
             {errors.email && errors.email.type === "required" && (

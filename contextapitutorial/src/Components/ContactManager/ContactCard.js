@@ -1,23 +1,21 @@
 import React from "react";
-import { Link ,useNavigate } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import user from "../../images/user.png";
-import { useContactContext } from "../../Context/contactContext";
 import api from "../../API/axios";
+import {useSelector , useDispatch} from 'react-redux';
+import {getAsyncContacts} from "../../Redux/ContactsRedux/ContactsSlice"
 
 const ContactCard = (props) => {
-  const {delContacts} = useContactContext()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const delContact =  async (id) =>{
     await api.delete(`/contacts/${id}`)
-    delContacts(id);
+    dispatch(getAsyncContacts())
+
   }
   const edit =  (id) =>{
-    navigate("/home/editcontact/",{
-      state:{
-          id
-        },
-    })
+    navigate(`/home/editcontact/${id}`)
   }
 
   return (

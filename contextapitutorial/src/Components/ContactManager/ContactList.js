@@ -1,40 +1,26 @@
 import { Link } from "react-router-dom";
-import { useContactContext } from "../../Context/contactContext";
 import ContactCard from "./ContactCard";
 import { useEffect } from "react";
-import axios from "../../API/axios"
+import {useSelector , useDispatch} from 'react-redux';
+import {getAllContacts,getAsyncContacts} from "../../Redux/ContactsRedux/ContactsSlice"
 
 function ContactList(){
-  const {contacts, setContacts} = useContactContext()
 
-  const getContactsApi = async () =>{
-   
-    const response = await axios.get("/Contacts");
-    return response.data
-
-  }
+  const allContacts = useSelector(getAllContacts);
+  const dispatch = useDispatch()
   useEffect(()=>{
-    const getAllContacts = async ()=>{
-      const allContacts = await getContactsApi()
-      if(allContacts){
-      setContacts(allContacts)
-      }
-    }
-    getAllContacts()
+    dispatch(getAsyncContacts())
   },[])
 
-    
-    const renderContactCards = 
-      contacts.map(
+  const renderContactCards = 
+    allContacts.map(
         (contact)=>{
-          console.log(contact)
           return(
-          <ContactCard contact={contact}/>
+          <ContactCard key={contact.id} contact={contact}/>
           )
         }
-      )
-    
-    return(
+    )
+  return(
         <div className="contactList">
         <div className="contactListHeader">
         <h3>
@@ -47,6 +33,6 @@ function ContactList(){
         <div className="ui celled list">{renderContactCards}</div>
         
       </div>
-    )
+  )
 }
 export default ContactList
