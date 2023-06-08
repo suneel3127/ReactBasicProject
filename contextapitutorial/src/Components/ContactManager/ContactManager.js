@@ -11,7 +11,7 @@ function ContactManager(){
             <Routes>
             <Route path="/addcontact" element={<AddContact />}></Route>
             <Route path="/editcontact/:id" element={<EditContact />}></Route>
-            <Route path="/contactlist" element={<ContactList />}></Route>
+            <Route path="/" element={<ContactList />}></Route>
             </Routes>
         </div>
     )

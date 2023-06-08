@@ -3,29 +3,24 @@ import { useNavigate ,useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "../../API/axios";
 import {useSelector , useDispatch} from 'react-redux';
-import {setSelectedContacts,getSelectedContact} from  "../../Redux/ContactsRedux/ContactsSlice"
+import {setSelectedContacts,getSelectedContact} from  "../../Redux/ContactsRedux/ContactsSlice";
+import { useEditContactMutation,useGetContactByIdQuery } from "../../API/rtkQueryApi";
 
 function EditContact(){
     const { register,formState: { errors }, handleSubmit,setValue } = useForm();
-    //const [editableContact,setEditableContact] = useState([{id:"",name:"",email:""}]);
     
-
-    const selectedContact = useSelector(getSelectedContact)
+    
     const dispatch = useDispatch()
 
     const navigate = useNavigate();
     const {id} = useParams()
+    const {data:selectedContact,error,isLoading} = useGetContactByIdQuery(id);
+    const [editContact] = useEditContactMutation()
   
-    const getContactsApi = async () =>{
-      const response = await axios.get(`/Contacts/${id}`);
-      dispatch(setSelectedContacts(response.data))
-      //setEditableContact(response.data);
-    }
+    
      
 
-    useEffect(()=>{
-      getContactsApi()
-    },[])
+    
 
     useEffect(()=>{
       if (selectedContact) {
@@ -37,8 +32,8 @@ function EditContact(){
     
    
     const onSubmit =  async (data) =>{
-      const response = await axios.put(`/Contacts/${id}`,{"id":id,...data});
-      navigate("/home/contactlist")
+      await editContact({"id":id,...data});
+      navigate("/contactmanager")
     }
 
     return(

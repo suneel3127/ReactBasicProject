@@ -16,9 +16,11 @@ export function UserContextProvider({children}){
         if(existingUserData.some(user=>user.username == data.username && user.password == data.password))
        {
         setUser({name:data.username , isUserLoggedIn : true})
+        return true
        }
        else{
         alert('please sign up')
+        return false
        }
        
     }

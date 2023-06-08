@@ -19,7 +19,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<LoginForm />}></Route>
-        <Route path="/home/*" element={<ContactManager />}></Route>
+        <Route path="/contactmanager/*" element={<ContactManager />}></Route>
+        <Route path="/home" element={<Home />}></Route>
         <Route path="/signup" element = {<SignUp/>}></Route>
       </Routes>
       </UserContextProvider>

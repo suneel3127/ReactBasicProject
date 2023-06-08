@@ -1,19 +1,20 @@
 import { useForm } from "react-hook-form";
-import { useNavigate ,useLocation} from "react-router-dom";
-import { useState } from "react";
-import api from "../../API/axios";
+import { useNavigate} from "react-router-dom";
+import { useAddContactsMutation } from "../../API/rtkQueryApi";
 
 function AddContact(){
     const { register,formState: { errors }, handleSubmit } = useForm();
     const navigate = useNavigate();
-    const onSubmit = async (data) =>{
 
+    const [addContact] = useAddContactsMutation()
+
+    const onSubmit = async (data) =>{
         const request={
           id:Math.ceil(Math.random()*1000),
           ...data
         }
-        const response = await api.post("/contacts",request);
-         navigate("/home/contactlist")
+         await addContact(request)
+         navigate("/contactmanager")
     }
 
     return(

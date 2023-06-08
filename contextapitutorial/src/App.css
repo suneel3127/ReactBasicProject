@@ -160,3 +160,36 @@ i.icon {
 .right {
   float: right !important;
 }
+.HomeContainer{
+  margin-top: 200px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Home{
+ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.ContactContainer{
+  border-bottom: 1px solid black;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+}
+.MovieContainer{
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+}

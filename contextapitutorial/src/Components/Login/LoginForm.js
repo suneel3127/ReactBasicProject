@@ -8,8 +8,11 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const {logIn} = useUserContext()
   const onSubmit = (data) => {
-    logIn(data);
-    navigate("/home/contactlist");
+    const isvalid = logIn(data);
+    if (isvalid)
+    {
+      navigate("/home")
+    }
   };
 
   return (
